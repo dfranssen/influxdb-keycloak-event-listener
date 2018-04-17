@@ -1,0 +1,1127 @@
+{
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1523962190817,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "panels": [],
+      "repeat": "realm",
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "title": "$realm",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "influx",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 4,
+      "links": [],
+      "pageSize": null,
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "username",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "type"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "query": "SELECT last(\"username\") AS \"username\" FROM \"14d\".\"event\" WHERE \"realmId\" =~ /^$realm$/ AND (\"type\" = 'LOGIN' OR \"type\" = 'LOGIN_ERROR' OR \"type\" = 'REGISTER' OR \"type\" = 'REGISTER_ERROR') AND $timeFilter GROUP BY \"type\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "username"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "username"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN"
+            },
+            {
+              "condition": "OR",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN_ERROR"
+            },
+            {
+              "condition": "OR",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER_ERROR"
+            }
+          ]
+        }
+      ],
+      "title": "Last event",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx",
+      "decimals": null,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 2,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "logins",
+          "color": "#3F6833"
+        },
+        {
+          "alias": "login errors",
+          "color": "#BF1B00"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "logins",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN"
+            }
+          ]
+        },
+        {
+          "alias": "login errors",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN_ERROR"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Logins per $grouping",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx",
+      "decimals": null,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 3,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "logins",
+          "color": "#3F6833"
+        },
+        {
+          "alias": "login errors",
+          "color": "#BF1B00"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "registrations",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER"
+            }
+          ]
+        },
+        {
+          "alias": "registration errors",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER_ERROR"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Registrations per $grouping",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 9,
+      "panels": [],
+      "repeat": null,
+      "repeatIteration": 1523962190817,
+      "repeatPanelId": 8,
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "title": "$realm",
+      "type": "row"
+    },
+    {
+      "columns": [],
+      "datasource": "influx",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 10,
+      "links": [],
+      "pageSize": null,
+      "repeatIteration": 1523962190817,
+      "repeatPanelId": 4,
+      "repeatedByRow": true,
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "username",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "type"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "query": "SELECT last(\"username\") AS \"username\" FROM \"14d\".\"event\" WHERE \"realmId\" =~ /^$realm$/ AND (\"type\" = 'LOGIN' OR \"type\" = 'LOGIN_ERROR' OR \"type\" = 'REGISTER' OR \"type\" = 'REGISTER_ERROR') AND $timeFilter GROUP BY \"type\"",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "username"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "username"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN"
+            },
+            {
+              "condition": "OR",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN_ERROR"
+            },
+            {
+              "condition": "OR",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER_ERROR"
+            }
+          ]
+        }
+      ],
+      "title": "Last event",
+      "transform": "table",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx",
+      "decimals": null,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 9
+      },
+      "id": 11,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1523962190817,
+      "repeatPanelId": 2,
+      "repeatedByRow": true,
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "logins",
+          "color": "#3F6833"
+        },
+        {
+          "alias": "login errors",
+          "color": "#BF1B00"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "logins",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN"
+            }
+          ]
+        },
+        {
+          "alias": "login errors",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "LOGIN_ERROR"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Logins per $grouping",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "influx",
+      "decimals": null,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 12,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeatIteration": 1523962190817,
+      "repeatPanelId": 3,
+      "repeatedByRow": true,
+      "scopedVars": {
+        "realm": {
+          "selected": false,
+          "text": "master",
+          "value": "master"
+        }
+      },
+      "seriesOverrides": [
+        {
+          "alias": "logins",
+          "color": "#3F6833"
+        },
+        {
+          "alias": "login errors",
+          "color": "#BF1B00"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "registrations",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER"
+            }
+          ]
+        },
+        {
+          "alias": "registration errors",
+          "dsType": "influxdb",
+          "groupBy": [
+            {
+              "params": [
+                "$grouping"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "event",
+          "orderByTime": "ASC",
+          "policy": "14d",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "ipAddress"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "realmId",
+              "operator": "=~",
+              "value": "/^$realm$/"
+            },
+            {
+              "condition": "AND",
+              "key": "type",
+              "operator": "=",
+              "value": "REGISTER_ERROR"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Registrations per $grouping",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "influx",
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": false,
+        "name": "realm",
+        "options": [],
+        "query": "SHOW TAG VALUES from \"14d\".event WITH KEY = \"realmId\"",
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "auto": false,
+        "auto_count": 30,
+        "auto_min": "10s",
+        "current": {
+          "text": "1d",
+          "value": "1d"
+        },
+        "hide": 0,
+        "label": null,
+        "name": "grouping",
+        "options": [
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": true,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          }
+        ],
+        "query": "1h,1d,7d",
+        "refresh": 2,
+        "type": "interval"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-14d",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Keycloak logins",
+  "uid": "000000003",
+  "version": 11
+}
