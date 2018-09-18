@@ -27,7 +27,7 @@ Then register the provider by editing `standalone/configuration/standalone.xml` 
 Configuration
 -------------
 Make sure the following environment variables are provided with the InfluxDB details:
-* `INFLUXDB_HOST` host to connect to. E.g. `localhost`. By default `influxDB`.
+* `INFLUXDB_HOST` host to connect to. E.g. `localhost`. By default `influxdb`.
 * `INFLUXDB_PORT`: port to connect to. E.g. `8086`. By default `8086`.
 * `INFLUXDB_USER`: user to connect with. E.g. `root`. By default `root`.
 * `INFLUXDB_PWD`: password of the user. E.g. `your-super-secrect-pwd`. By default `root`.
@@ -54,3 +54,7 @@ Dashboarding
 ------------
 See the `grafana-dashboards` folder for some [Grafana](https://grafana.com) dashboards, based on a `14d` retention policy,  to visualize those KeyCloak events/logins per realm.
 Those json files can be easily imported in Grafana.
+
+Integrated example
+------------------
+See [https://github.com/dfranssen/communities-demo/tree/extra](https://github.com/dfranssen/communities-demo/tree/solution)

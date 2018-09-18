@@ -18,7 +18,7 @@ public class InfluxDBEventListenerProviderFactory implements EventListenerProvid
     private Set<EventType> excludedEvents;
     private Set<OperationType> excludedAdminOperations;
 
-    private final String influxdbHost = getEnvOrDefault("INFLUXDB_HOST", "influxDB");
+    private final String influxdbHost = getEnvOrDefault("INFLUXDB_HOST", "influxdb");
     private final String influxdbPort = getEnvOrDefault("INFLUXDB_PORT", "8086");
     private final String influxdbUser = getEnvOrDefault("INFLUXDB_USER", "root");
     private final String influxdbPassword = getEnvOrDefault("INFLUXDB_PWD", "root");
