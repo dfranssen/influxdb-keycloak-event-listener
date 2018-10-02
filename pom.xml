@@ -63,7 +63,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <keycloak.version>4.4.0.Final</keycloak.version>
+        <keycloak.version>4.5.0.Final</keycloak.version>
         <influxdb-java.version>2.13</influxdb-java.version>
     </properties>
 </project>
